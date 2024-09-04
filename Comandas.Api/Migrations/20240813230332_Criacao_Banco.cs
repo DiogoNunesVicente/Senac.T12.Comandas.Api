@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Comandas.Api.Migrations
 {
     /// <inheritdoc />
-    public partial class CriacaoBanco : Migration
+    public partial class Criacao_Banco : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -18,7 +18,7 @@ namespace Comandas.Api.Migrations
                 name: "CardapioItems",
                 columns: table => new
                 {
-                    id = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     Titulo = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
@@ -29,7 +29,7 @@ namespace Comandas.Api.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CardapioItems", x => x.id);
+                    table.PrimaryKey("PK_CardapioItems", x => x.Id);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -37,7 +37,7 @@ namespace Comandas.Api.Migrations
                 name: "Comandas",
                 columns: table => new
                 {
-                    id = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     NumeroMesa = table.Column<int>(type: "int", nullable: false),
                     NomeCliente = table.Column<string>(type: "longtext", nullable: false)
@@ -46,7 +46,7 @@ namespace Comandas.Api.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Comandas", x => x.id);
+                    table.PrimaryKey("PK_Comandas", x => x.Id);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -54,14 +54,29 @@ namespace Comandas.Api.Migrations
                 name: "Mesas",
                 columns: table => new
                 {
-                    id = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     NumeroMesa = table.Column<int>(type: "int", nullable: false),
                     SituacaoMesa = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Mesas", x => x.id);
+                    table.PrimaryKey("PK_Mesas", x => x.Id);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "PedidoCozinhas",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    ComandaId = table.Column<int>(type: "int", nullable: false),
+                    SituacaoId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PedidoCozinhas", x => x.Id);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -75,7 +90,7 @@ namespace Comandas.Api.Migrations
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Email = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    senha = table.Column<string>(type: "longtext", nullable: false)
+                    Senha = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4")
                 },
                 constraints: table =>
@@ -85,7 +100,7 @@ namespace Comandas.Api.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "ComandasItem",
+                name: "ComandaItems",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -95,45 +110,24 @@ namespace Comandas.Api.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ComandasItem", x => x.Id);
+                    table.PrimaryKey("PK_ComandaItems", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ComandasItem_CardapioItems_CardapioItemId",
+                        name: "FK_ComandaItems_CardapioItems_CardapioItemId",
                         column: x => x.CardapioItemId,
                         principalTable: "CardapioItems",
-                        principalColumn: "id",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_ComandasItem_Comandas_ComandaId",
+                        name: "FK_ComandaItems_Comandas_ComandaId",
                         column: x => x.ComandaId,
                         principalTable: "Comandas",
-                        principalColumn: "id",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "pedidoCozinhas",
-                columns: table => new
-                {
-                    id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    ComandaId = table.Column<int>(type: "int", nullable: false),
-                    SituacaoId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_pedidoCozinhas", x => x.id);
-                    table.ForeignKey(
-                        name: "FK_pedidoCozinhas_Comandas_ComandaId",
-                        column: x => x.ComandaId,
-                        principalTable: "Comandas",
-                        principalColumn: "id",
-                        onDelete: ReferentialAction.Cascade);
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
-
-            migrationBuilder.CreateTable(
-                name: "pedidoCozinhaItems",
+                name: "PedidoCozinhaItems",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -143,46 +137,41 @@ namespace Comandas.Api.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_pedidoCozinhaItems", x => x.Id);
+                    table.PrimaryKey("PK_PedidoCozinhaItems", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_pedidoCozinhaItems_ComandasItem_ComandaItemId",
+                        name: "FK_PedidoCozinhaItems_ComandaItems_ComandaItemId",
                         column: x => x.ComandaItemId,
-                        principalTable: "ComandasItem",
+                        principalTable: "ComandaItems",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_pedidoCozinhaItems_pedidoCozinhas_PedidoCozinhaId",
+                        name: "FK_PedidoCozinhaItems_PedidoCozinhas_PedidoCozinhaId",
                         column: x => x.PedidoCozinhaId,
-                        principalTable: "pedidoCozinhas",
-                        principalColumn: "id",
+                        principalTable: "PedidoCozinhas",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ComandasItem_CardapioItemId",
-                table: "ComandasItem",
+                name: "IX_ComandaItems_CardapioItemId",
+                table: "ComandaItems",
                 column: "CardapioItemId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ComandasItem_ComandaId",
-                table: "ComandasItem",
+                name: "IX_ComandaItems_ComandaId",
+                table: "ComandaItems",
                 column: "ComandaId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_pedidoCozinhaItems_ComandaItemId",
-                table: "pedidoCozinhaItems",
+                name: "IX_PedidoCozinhaItems_ComandaItemId",
+                table: "PedidoCozinhaItems",
                 column: "ComandaItemId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_pedidoCozinhaItems_PedidoCozinhaId",
-                table: "pedidoCozinhaItems",
+                name: "IX_PedidoCozinhaItems_PedidoCozinhaId",
+                table: "PedidoCozinhaItems",
                 column: "PedidoCozinhaId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_pedidoCozinhas_ComandaId",
-                table: "pedidoCozinhas",
-                column: "ComandaId");
         }
 
         /// <inheritdoc />
@@ -192,16 +181,16 @@ namespace Comandas.Api.Migrations
                 name: "Mesas");
 
             migrationBuilder.DropTable(
+                name: "PedidoCozinhaItems");
+
+            migrationBuilder.DropTable(
                 name: "Usuarios");
 
             migrationBuilder.DropTable(
-                name: "pedidoCozinhaItems");
+                name: "ComandaItems");
 
             migrationBuilder.DropTable(
-                name: "ComandasItem");
-
-            migrationBuilder.DropTable(
-                name: "pedidoCozinhas");
+                name: "PedidoCozinhas");
 
             migrationBuilder.DropTable(
                 name: "CardapioItems");

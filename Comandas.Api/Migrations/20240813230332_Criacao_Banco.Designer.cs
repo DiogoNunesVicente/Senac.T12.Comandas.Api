@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SistemaDeComandas.BancoDeDados;
 
@@ -10,9 +11,11 @@ using SistemaDeComandas.BancoDeDados;
 namespace Comandas.Api.Migrations
 {
     [DbContext(typeof(ComandaContexto))]
-    partial class ComandaContextoModelSnapshot : ModelSnapshot
+    [Migration("20240813230332_Criacao_Banco")]
+    partial class Criacao_Banco
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

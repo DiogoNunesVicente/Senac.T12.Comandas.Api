@@ -4,15 +4,15 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using SistemadeComandas.BancoDeDados;
+using SistemaDeComandas.BancoDeDados;
 
 #nullable disable
 
 namespace Comandas.Api.Migrations
 {
     [DbContext(typeof(ComandaContexto))]
-    [Migration("20240813230402_Criacao-Banco")]
-    partial class CriacaoBanco
+    [Migration("20240820224244_Criacao_Banco2")]
+    partial class Criacao_Banco2
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,13 +24,13 @@ namespace Comandas.Api.Migrations
 
             MySqlModelBuilderExtensions.AutoIncrementColumns(modelBuilder);
 
-            modelBuilder.Entity("SistemadeComandas.Modelos.CardapioItem", b =>
+            modelBuilder.Entity("SistemaDeComandas.Modelos.CardapioItem", b =>
                 {
-                    b.Property<int>("id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("id"));
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Descricao")
                         .IsRequired()
@@ -46,18 +46,18 @@ namespace Comandas.Api.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.HasKey("id");
+                    b.HasKey("Id");
 
                     b.ToTable("CardapioItems");
                 });
 
-            modelBuilder.Entity("SistemadeComandas.Modelos.Comanda", b =>
+            modelBuilder.Entity("SistemaDeComandas.Modelos.Comanda", b =>
                 {
-                    b.Property<int>("id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("id"));
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("NomeCliente")
                         .IsRequired()
@@ -69,12 +69,12 @@ namespace Comandas.Api.Migrations
                     b.Property<int>("SituacaoComanda")
                         .HasColumnType("int");
 
-                    b.HasKey("id");
+                    b.HasKey("Id");
 
                     b.ToTable("Comandas");
                 });
 
-            modelBuilder.Entity("SistemadeComandas.Modelos.ComandaItem", b =>
+            modelBuilder.Entity("SistemaDeComandas.Modelos.ComandaItem", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -94,16 +94,16 @@ namespace Comandas.Api.Migrations
 
                     b.HasIndex("ComandaId");
 
-                    b.ToTable("ComandasItem");
+                    b.ToTable("ComandaItems");
                 });
 
-            modelBuilder.Entity("SistemadeComandas.Modelos.Mesa", b =>
+            modelBuilder.Entity("SistemaDeComandas.Modelos.Mesa", b =>
                 {
-                    b.Property<int>("id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("id"));
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("NumeroMesa")
                         .HasColumnType("int");
@@ -111,18 +111,18 @@ namespace Comandas.Api.Migrations
                     b.Property<int>("SituacaoMesa")
                         .HasColumnType("int");
 
-                    b.HasKey("id");
+                    b.HasKey("Id");
 
                     b.ToTable("Mesas");
                 });
 
-            modelBuilder.Entity("SistemadeComandas.Modelos.PedidoCozinha", b =>
+            modelBuilder.Entity("SistemaDeComandas.Modelos.PedidoCozinha", b =>
                 {
-                    b.Property<int>("id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("id"));
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("ComandaId")
                         .HasColumnType("int");
@@ -130,14 +130,12 @@ namespace Comandas.Api.Migrations
                     b.Property<int>("SituacaoId")
                         .HasColumnType("int");
 
-                    b.HasKey("id");
+                    b.HasKey("Id");
 
-                    b.HasIndex("ComandaId");
-
-                    b.ToTable("pedidoCozinhas");
+                    b.ToTable("PedidoCozinhas");
                 });
 
-            modelBuilder.Entity("SistemadeComandas.Modelos.PedidoCozinhaItem", b =>
+            modelBuilder.Entity("SistemaDeComandas.Modelos.PedidoCozinhaItem", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -157,10 +155,10 @@ namespace Comandas.Api.Migrations
 
                     b.HasIndex("PedidoCozinhaId");
 
-                    b.ToTable("pedidoCozinhaItems");
+                    b.ToTable("PedidoCozinhaItems");
                 });
 
-            modelBuilder.Entity("SistemadeComandas.Modelos.Usuario", b =>
+            modelBuilder.Entity("SistemaDeComandas.Modelos.Usuario", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -176,7 +174,7 @@ namespace Comandas.Api.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<string>("senha")
+                    b.Property<string>("Senha")
                         .IsRequired()
                         .HasColumnType("longtext");
 
@@ -185,15 +183,15 @@ namespace Comandas.Api.Migrations
                     b.ToTable("Usuarios");
                 });
 
-            modelBuilder.Entity("SistemadeComandas.Modelos.ComandaItem", b =>
+            modelBuilder.Entity("SistemaDeComandas.Modelos.ComandaItem", b =>
                 {
-                    b.HasOne("SistemadeComandas.Modelos.CardapioItem", "CardapioItem")
+                    b.HasOne("SistemaDeComandas.Modelos.CardapioItem", "CardapioItem")
                         .WithMany()
                         .HasForeignKey("CardapioItemId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("SistemadeComandas.Modelos.Comanda", "Comanda")
+                    b.HasOne("SistemaDeComandas.Modelos.Comanda", "Comanda")
                         .WithMany("ComandaItems")
                         .HasForeignKey("ComandaId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -204,26 +202,15 @@ namespace Comandas.Api.Migrations
                     b.Navigation("Comanda");
                 });
 
-            modelBuilder.Entity("SistemadeComandas.Modelos.PedidoCozinha", b =>
+            modelBuilder.Entity("SistemaDeComandas.Modelos.PedidoCozinhaItem", b =>
                 {
-                    b.HasOne("SistemadeComandas.Modelos.Comanda", "Comanda")
-                        .WithMany()
-                        .HasForeignKey("ComandaId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Comanda");
-                });
-
-            modelBuilder.Entity("SistemadeComandas.Modelos.PedidoCozinhaItem", b =>
-                {
-                    b.HasOne("SistemadeComandas.Modelos.ComandaItem", "ComandaItem")
+                    b.HasOne("SistemaDeComandas.Modelos.ComandaItem", "ComandaItem")
                         .WithMany()
                         .HasForeignKey("ComandaItemId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("SistemadeComandas.Modelos.PedidoCozinha", "PedidoCozinha")
+                    b.HasOne("SistemaDeComandas.Modelos.PedidoCozinha", "PedidoCozinha")
                         .WithMany("PedidoCozinhaItems")
                         .HasForeignKey("PedidoCozinhaId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -234,12 +221,12 @@ namespace Comandas.Api.Migrations
                     b.Navigation("PedidoCozinha");
                 });
 
-            modelBuilder.Entity("SistemadeComandas.Modelos.Comanda", b =>
+            modelBuilder.Entity("SistemaDeComandas.Modelos.Comanda", b =>
                 {
                     b.Navigation("ComandaItems");
                 });
 
-            modelBuilder.Entity("SistemadeComandas.Modelos.PedidoCozinha", b =>
+            modelBuilder.Entity("SistemaDeComandas.Modelos.PedidoCozinha", b =>
                 {
                     b.Navigation("PedidoCozinhaItems");
                 });

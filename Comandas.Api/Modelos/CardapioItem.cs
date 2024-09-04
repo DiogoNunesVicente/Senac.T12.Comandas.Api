@@ -1,18 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace SistemadeComandas.Modelos
+namespace SistemaDeComandas.Modelos
 {
     public class CardapioItem
     {
+        // Key = significa chave primaria
+        // DatabaseGenerated = Valor Gerado da coluna será realizado pelo BD
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int id { get; set; }
+        public int Id { get; set; }
         public string Titulo { get; set; }
         public string Descricao { get; set; }
         public decimal Preco { get; set; }

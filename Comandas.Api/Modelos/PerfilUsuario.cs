@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SistemadeComandas.Modelos
+namespace SistemaDeComandas.Modelos
 {
     internal class PerfilUsuario
     {

@@ -1,11 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace SistemadeComandas.Modelos
+namespace SistemaDeComandas.Modelos
 {
     public class ComandaItem
     {
-
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
@@ -13,6 +12,5 @@ namespace SistemadeComandas.Modelos
         public virtual CardapioItem CardapioItem { get; set; }
         public int ComandaId { get; set; }
         public virtual Comanda Comanda { get; set; }
-
     }
 }

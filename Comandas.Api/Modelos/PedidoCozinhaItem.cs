@@ -1,9 +1,7 @@
-﻿
-
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.ComponentModel.DataAnnotations;
 
-namespace SistemadeComandas.Modelos
+namespace SistemaDeComandas.Modelos
 {
     public class PedidoCozinhaItem
     {
@@ -14,6 +12,5 @@ namespace SistemadeComandas.Modelos
         public virtual PedidoCozinha PedidoCozinha { get; set; }
         public int ComandaItemId { get; set; }
         public virtual ComandaItem ComandaItem { get; set; }
-
     }
 }
