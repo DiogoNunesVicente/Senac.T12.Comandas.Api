@@ -27,16 +27,35 @@ namespace Comandas.Api.Controllers
 
         // GET: api/Comandas/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Comanda>> GetComanda(int id)
+        public async Task<ActionResult<ComandaGetDto>> GetComanda(int id)
         {
-            var comanda = await _context.Comandas.FindAsync(id);
-
+            var comanda = await _context.Comandas.FirstOrDefaultAsync(c => c.Id == id);
             if (comanda == null)
             {
                 return NotFound();
             }
 
-            return comanda;
+            var comandaDto = new ComandaGetDto
+            {
+                NumeroMesa = comanda.NumeroMesa,
+                NomeCliente = comanda.NomeCliente
+            };
+            //Busca os items da comanda
+            var comandaItens = await _context.ComandaItems
+                .Include(ci => ci.CardapioItem)
+                .Where(ci => ci.ComandaId == id)
+                .Select(cii => new ComandaItensGetDto
+                {
+                    Id = cii.Id,
+                    Titulo = cii.CardapioItem.Titulo,
+                })
+            .ToListAsync();
+
+            comandaDto.ComandaItens = comandaItens;
+
+            
+
+            return comandaDto;
         }
 
         // PUT: api/Comandas/5
