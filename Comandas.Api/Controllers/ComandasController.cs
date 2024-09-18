@@ -1,4 +1,4 @@
-﻿using Comandas.Api.Dtos;
+﻿    using Comandas.Api.Dtos;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SistemaDeComandas.BancoDeDados;
@@ -84,6 +84,24 @@ namespace Comandas.Api.Controllers
                     CardapioItemId = item
                 };
                 await _context.ComandaItems.AddAsync(novoComandaItem);
+
+                //verificar se o cardapio possui preparo se sim criar pedido da cozinha
+                var cardapioItem = await _context.CardapioItems.FindAsync(item);
+                if (cardapioItem.PossuiPreparo)
+                {
+                    var novoPedidoCozinha = new PedidoCozinha()
+                    {
+                        Comanda = comandaUpdate,
+                        SituacaoId = 1
+                    };
+                    await _context.PedidoCozinhas.AddAsync(novoPedidoCozinha);
+                    var novoPedidoCozinhaItem = new PedidoCozinhaItem()
+                    {
+                        PedidoCozinha = novoPedidoCozinha,
+                        ComandaItem = novoComandaItem
+                    };
+                    await _context.PedidoCozinhaItems.AddAsync(novoPedidoCozinhaItem);
+                }
             }
 
             try
@@ -132,6 +150,26 @@ namespace Comandas.Api.Controllers
                 // adicionando o novo item na comanda
                 // INSERT INTO ComandaItens (Id, CardapioItemId)
                 await _context.ComandaItems.AddAsync(novoItemComanda);
+
+                // Verificar se esxite preparo no cardapio
+                // Select possuipreparo FROM CardapioItem
+                var possuiPreparo = await _context.CardapioItems.FindAsync(item);
+
+                if (possuiPreparo.PossuiPreparo == true)
+                {
+                    var novoPedidoCozinha = new PedidoCozinha() 
+                    {
+                      Comanda = novaComanda,
+                      SituacaoId = 1 //pendente
+                    };
+                    await _context.PedidoCozinhas.AddAsync(novoPedidoCozinha);
+                    var novoPedidoCozinhaItem = new PedidoCozinhaItem() 
+                    { 
+                        PedidoCozinha = novoPedidoCozinha,
+                        ComandaItem = novoItemComanda
+                    };
+                    await _context.PedidoCozinhaItems.AddAsync(novoPedidoCozinhaItem);
+                }
             }
 
             // salvando a comanda
