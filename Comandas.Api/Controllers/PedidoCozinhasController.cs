@@ -23,9 +23,19 @@ namespace Comandas.Api.Controllers
 
         // GET: api/PedidoCozinhas
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<PedidoCozinha>>> GetPedidoCozinhas()
+        public async Task<ActionResult<IEnumerable<PedidoCozinha>>> GetPedidoCozinhas([FromQuery] int? SituacaoId)
         {
-            return await _context.PedidoCozinhas.ToListAsync();
+            var query = _context.PedidoCozinhas.AsQueryable().Include(p=>p.Comanda)
+                .Include(p => p.PedidoCozinhaItems)
+                .AsQueryable();
+
+            if (SituacaoId > 0)
+                query = query.Where(w => w.SituacaoId == SituacaoId);
+
+            return await query.ToListAsync();
+
+
+
         }
 
         // GET: api/PedidoCozinhas/5
