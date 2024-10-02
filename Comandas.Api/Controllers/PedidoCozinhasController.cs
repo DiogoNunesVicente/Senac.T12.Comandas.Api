@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Comandas.Api.Dtos;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -23,16 +24,26 @@ namespace Comandas.Api.Controllers
 
         // GET: api/PedidoCozinhas
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<PedidoCozinha>>> GetPedidoCozinhas([FromQuery] int? SituacaoId)
+        public async Task<ActionResult<IEnumerable<PedidoCozinhaGetDto>>> GetPedidoCozinhas([FromQuery] int? SituacaoId)
         {
-            var query = _context.PedidoCozinhas.AsQueryable().Include(p=>p.Comanda)
-                .Include(p => p.PedidoCozinhaItems)
-                .AsQueryable();
+            var query = _context.PedidoCozinhas
+                .Include(p=>p.Comanda)
+                .Include(p=>p.PedidoCozinhaItems)
+                    .ThenInclude( p => p.ComandaItem)
+                        .ThenInclude(p => p.CardapioItem)
+                    .AsQueryable();
 
             if (SituacaoId > 0)
                 query = query.Where(w => w.SituacaoId == SituacaoId);
 
-            return await query.ToListAsync();
+            return await query
+                .Select(s => new PedidoCozinhaGetDto()
+            {
+                Id = s.Id,
+                NumeroMesa = s.Comanda.NumeroMesa,
+                NomeCliente = s.Comanda.NomeCliente,
+                Titulo = s.PedidoCozinhaItems.First().ComandaItem.CardapioItem.Titulo
+            }).ToListAsync();
 
 
 
@@ -55,31 +66,16 @@ namespace Comandas.Api.Controllers
         // PUT: api/PedidoCozinhas/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutPedidoCozinha(int id, PedidoCozinha pedidoCozinha)
+        public async Task<IActionResult> PutPedidoCozinha(int id, PedidoCozinhaUpdateDto pedido)
         {
-            if (id != pedidoCozinha.Id)
-            {
-                return BadRequest();
-            }
+            var pedidoCozinha = await _context.PedidoCozinhas.FirstAsync(p => p.Id == id);
 
-            _context.Entry(pedidoCozinha).State = EntityState.Modified;
+            //Faz as aterações na situação do pedido
+            pedidoCozinha.SituacaoId = pedido.NovoStatusId;
 
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!PedidoCozinhaExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
+            //Salva as aterações no DB
+            //UPDATE PedidoCozinha SET SituaçãoID = 3 WHERE Id= @id
+            await _context.SaveChangesAsync();
             return NoContent();
         }
 
