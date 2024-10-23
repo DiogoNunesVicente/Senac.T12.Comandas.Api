@@ -20,9 +20,21 @@ namespace Comandas.Api.Controllers
 
         // GET: api/Comandas
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Comanda>>> GetComandas()
+        public async Task<ActionResult<IEnumerable<ComandaGetDto>>> GetComandas()
         {
-            return await _context.Comandas.ToListAsync();
+           var comandas =  await _context.Comandas
+                .Where(c=>c.SituacaoComanda == 1)
+                .Select(c => new ComandaGetDto { Id = c.Id,
+                    NumeroMesa = c.NumeroMesa,
+                    NomeCliente = c.NomeCliente,
+                    ComandaItens = c.ComandaItems
+                    .Select( ci => new ComandaItensGetDto { 
+                        Id = ci.Id, 
+                        Titulo = ci.CardapioItem.Titulo})
+                    .ToList()})
+                .ToListAsync();
+            //retorna o conteúdo com a lista de comandas
+            return Ok(comandas);
         }
 
         // GET: api/Comandas/5
@@ -197,6 +209,17 @@ namespace Comandas.Api.Controllers
         private bool ComandaExists(int id)
         {
             return _context.Comandas.Any(e => e.Id == id);
+        }
+        [HttpPatch("{id}")]
+        public async Task<IActionResult> PatchComanda(int id)
+        {
+            var comanda = await _context.Comandas.FindAsync(id);
+            if (comanda == null) //return 404
+                return NotFound();
+            //alteração da comanda
+            comanda.SituacaoComanda = 2;
+            await _context.SaveChangesAsync();
+            return NoContent(); //return 204
         }
     }
 }
