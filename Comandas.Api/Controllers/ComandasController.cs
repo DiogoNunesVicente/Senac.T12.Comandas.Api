@@ -108,15 +108,19 @@ namespace Comandas.Api.Controllers
             if (!string.IsNullOrEmpty(comanda.NomeCliente))
                 comandaUpdate.NomeCliente = comanda.NomeCliente;
             
-            foreach(var item in comanda.CardapioItems)
+            foreach(var item in comanda.ComandaItens)
             {
+                if (item.incluir)
+                {
                 var novoComandaItem = new ComandaItem()
                 {
                     Comanda = comandaUpdate,
-                    CardapioItemId = item
+                    CardapioItemId = item.cardapioItemId
                 };
-                await _context.ComandaItems.AddAsync(novoComandaItem);
 
+                await _context.ComandaItems.AddAsync(novoComandaItem);
+            
+                    
                 //verificar se o cardapio possui preparo se sim criar pedido da cozinha
                 var cardapioItem = await _context.CardapioItems.FindAsync(item);
                 if (cardapioItem.PossuiPreparo)
@@ -133,6 +137,15 @@ namespace Comandas.Api.Controllers
                         ComandaItem = novoComandaItem
                     };
                     await _context.PedidoCozinhaItems.AddAsync(novoPedidoCozinhaItem);
+                }
+            }
+                //excluir
+                if (item.excluir)
+                {
+                    var comandaItemExcluir = await _context.ComandaItems
+                        .FirstAsync(f => f.Id == item.Id);
+
+                    _context.ComandaItems.Remove(comandaItemExcluir);
                 }
             }
 

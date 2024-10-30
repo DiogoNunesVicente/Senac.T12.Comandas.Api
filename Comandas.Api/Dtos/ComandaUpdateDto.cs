@@ -6,6 +6,14 @@
         public int NumeroMesa { get; set; }
         public string NomeCliente { get; set; }
         // propriedade Array(vetor)int
-        public int[] CardapioItems { get; set; } = [];
+        public ComandaItemUpdateDto[] ComandaItens { get; set; } = [];
+    }
+
+    public class ComandaItemUpdateDto
+    {
+        public int cardapioItemId { get; set; }
+        public int Id { get; set; }
+        public bool excluir { get; set; } = false;
+        public bool incluir { get; set; } = false;
     }
 }
